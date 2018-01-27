@@ -30,6 +30,8 @@ dependencies {
     compile files('lib/box2d/box2d_processing.jar')
     compile files('lib/box2d/jbox2d-library-2.2.1-ds.jar')
     compile files('lib/sound/sound.jar')
+    compile files('lib/minim/minim.jar')
+    compile files('lib/minim/jsminim.jar')
 }
 
 compileKotlin {

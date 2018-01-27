@@ -1,10 +1,10 @@
 package spaceInvaders;
 
+import ddf.minim.AudioInput;
+import ddf.minim.Minim;
 import gab.opencv.OpenCV;
 import processing.core.PApplet;
 import processing.core.PImage;
-import processing.sound.Amplitude;
-import processing.sound.AudioIn;
 import processing.video.Capture;
 import utils.CameraHandler;
 import utils.DiffFrameUtil;
@@ -45,8 +45,9 @@ public class Game extends PApplet {
 
     public static PImage imageMonster;
 
-    AudioIn input;
-    Amplitude analyzer;
+    Minim minim;
+
+    AudioInput in;
 
     @Override
     public void settings() {
@@ -59,10 +60,8 @@ public class Game extends PApplet {
     @Override
     public void setup() {
         super.setup();
-//        input = new AudioIn(this, 0);
-//        input.start();
-//        analyzer = new Amplitude(this);
-//        analyzer.input(input);
+        minim = new Minim(this);
+        in = minim.getLineIn();
         openCV = new OpenCV(this, cameraHandler.getPrevFrame());
         cameraHandler.setup();
         generateEnemies(20);
@@ -75,6 +74,10 @@ public class Game extends PApplet {
     public void draw() {
         if (cameraHandler.getVideo().available()) {
             background(0);
+            int volume = (int) (in.left.get(1)*50);
+            if(volume>1){
+                generateEnemies(volume);
+            }
             if (cameraMode) {
                 cameraHandler.getVideo().read();
                 DiffFrameUtil.calculateDiffFrame(cameraHandler, openCV);
